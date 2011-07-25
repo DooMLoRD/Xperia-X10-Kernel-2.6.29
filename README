@@ -1,1 +1,93 @@
-setting up test GITHUB REPO for DooMKernel-X10 v01
+DooMKernel For Xperia X10 Repo
+
+based on zdzihu's zKernel-05072011
+
+
+Changelog: (Test versions)
+----------
+
+[v03a] decreased MAX cpu frequency to 1228Mhz
+
+
+
+
+Changelog: (Final versions)
+----------
+
+[v03]
+
+    * derived from zKernel 05072011:
+          o kernel version 2.6.29
+          o latest SE sources (2.1.A.0.492)
+          o FPS cap removed
+          o overclocked to 1.13GHz
+          o in-call volume increased
+          o full netfilter support (droid wall, wifi tether)
+          o drivemapper support (2.2+ native app2sd)
+          o working with basebands 54+ (67 recommended)
+    * my additions:
+          o confirmed to be working on all basebands (2.0.xx & 2.1.xx)
+          o cpu voltage modulation:
+                + S-series kernels - stock voltages
+                + X-series kernels - undervolted
+          o optimized frequency-voltage table
+               1. added 192 Mhz frequency and unlocked frequencies from 128Mhz to 1267Mhz [for both series]
+               2. further decreased voltage (improved undervolt) for many frequencies [X-series only]
+          o startup/bootup frequencies set at min:245Mhz, max:998Mhz (in ramdisk)
+          o CPU Governors activated/added: Interactive (the inbuilt governors have not been disabled)
+          o compiled using GCC 4.4.3
+          o File System support (in kernel): EXT3, EXT4, NTFS, NFS (server/client), CIFS
+          o enabled access to .config through /proc/config.gz
+          o enabled ARM THUMBEE extensions
+          o SLAB memory allocator
+          o I/O scheduler activated: CFQ, Anticipatory (the inbuilt schedulers have not been disabled)
+          o enabled TUN & TAP (VPN support)
+          o added init.rc tweaks (thanks to erickwill)
+          o added a special verion bootlogo
+
+[v02]
+
+    * derived from zKernel 05072011:
+          o kernel version 2.6.29
+          o latest SE sources (2.1.A.0.492)
+          o FPS cap removed
+          o overclocked to 1.13GHz
+          o in-call volume increased
+          o full netfilter support (droid wall, wifi tether)
+          o drivemapper support (2.2+ native app2sd)
+          o working with basebands 54+ (67 recommended)
+    * my additions:
+          o unlocked frequencies from 128Mhz to 1228Mhz [for both series]
+          o for sake of safe booting startup/bootup frequencies set at min:245Mhz, max:998Mhz
+          o cpu voltage modulation:
+                + S-series kernels - stock voltages
+                + X-series kernels - undervolted
+          o increased voltage for frequency 1228Mhz to 1375mV [for both series]
+          o decreased voltage (improved undervolt) for many frequencies [X-series only]
+          o added 'Interactive' governor [for both series]
+          o compiled using GCC 4.4.3
+          o enabled EXT3, EXT4, NTFS file system support in kernel
+          o enabled NFS (server/client), CIFS file system support in kernel
+          o enabled access to .config through /proc/config.gz
+          o enabled ARM THUMBEE extensions
+          o changed SLAB allocator to SLUB
+
+
+[v01]
+
+    * derived from zKernel 05072011:
+          o kernel version 2.6.29
+          o latest SE sources (2.1.A.0.492)
+          o FPS cap removed
+          o overclocked to 1.13GHz
+          o in-call volume increased
+          o full netfilter support (droid wall, wifi tether)
+          o drivemapper support (2.2+ native app2sd)
+          o working with basebands 54+ (67 recommended)
+    * my additions:
+          o unlocked frequencies from 128Mhz to 1228Mhz (for both series kernels)
+          o for sake of safe booting startup/bootup frequencies set at min:245Mhz, max:998Mhz
+          o cpu voltage modulation:
+                + S-series kernels - stock voltages
+                + X-series kernels - undervolted
+
