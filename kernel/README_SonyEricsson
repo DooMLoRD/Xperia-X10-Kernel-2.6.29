@@ -1,0 +1,7 @@
+Configuration files can be found in arch/arm/configs. 
+
+Xperia X10 => semc_es209ra_defconfig
+Xperia X10 Mini => semc_robyn_defconfig
+Xperia X10 Mini Pro => semc_mimmi_defconfig
+Xperia X8 => semc_shakira_defconfig
+
