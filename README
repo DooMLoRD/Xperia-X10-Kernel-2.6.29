@@ -6,10 +6,11 @@ based on zdzihu's zKernel-05072011
 Changelog: (Test versions)
 ----------
 
+[v03d] added Smartass CPU governor (untweaked)
 [v03c] tweaked CFQ I/O scheduler
 [v03c] added BFQ I/O scheduler
 [v03b] Tweaker scheduler params to give better responsiveness
-[v03b] added MINMAX governor
+[v03b] added MINMAX CPU governor
 [v03a] decreased MAX cpu frequency to 1228Mhz
 
 
