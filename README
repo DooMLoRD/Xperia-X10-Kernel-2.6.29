@@ -6,6 +6,7 @@ based on zdzihu's zKernel-05072011
 Changelog: (Test versions)
 ----------
 
+[v03e] removed some debugging options from .config
 [v03d] added Smartass CPU governor (untweaked)
 [v03c] tweaked CFQ I/O scheduler
 [v03c] added BFQ I/O scheduler
