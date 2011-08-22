@@ -83,9 +83,6 @@
 #include <linux/platform_device.h>
 #include <linux/android_pmem.h>
 #include <linux/bootmem.h>
-#ifdef CONFIG_USB_FUNCTION
-#include <linux/usb/mass_storage_function.h>
-#endif
 #include <linux/i2c.h>
 #include <linux/spi/spi.h>
 #include <linux/delay.h>
@@ -131,7 +128,7 @@
 #include "proc_comm.h"
 #include <linux/msm_kgsl.h>
 #ifdef CONFIG_USB_ANDROID
-#include <linux/usb/android.h>
+#include <linux/usb/android_composite.h>
 #endif /* CONFIG_USB_ANDROID */
 #include "board-es209ra.h"
 #include "board-es209ra-keypad.h"
@@ -140,7 +137,7 @@
 #endif
 #include <linux/spi/es209ra_touch.h>
 #include <asm/setup.h>
-#include "q6audio.h"
+#include "qdsp6/q6audio.h"
 #include <../../../drivers/video/msm/mddi_tmd_nt35580.h>
 #ifdef CONFIG_SEMC_LOW_BATT_SHUTDOWN
 #include <mach/semc_low_batt_shutdown.h>
@@ -149,6 +146,8 @@
 #ifdef CONFIG_SEMC_MSM_PMIC_VIBRATOR
 #include  <linux/semc/msm_pmic_vibrator.h>
 #endif
+
+#include <linux/bma150_ng.h>
 
 /* MDDI includes */
 #include "../../../drivers/video/msm/msm_fb_panel.h"
@@ -271,117 +270,112 @@ static struct resource smc91x_resources[] = {
 };
 #endif
 
-#ifdef CONFIG_USB_FUNCTION
-static struct usb_mass_storage_lun_config mass_storage_lun_config[] = {
-	{	/*lun#0*/
-		.is_cdrom = false,
-		.shift_size = 9,
-		.can_stall = true,
-	},
-	{   /*lun#1*/
-		.is_cdrom = true,
-		.shift_size = 11,
-		.can_stall = false,
-	},
-};
-
-static struct usb_mass_storage_platform_data usb_mass_storage_pdata = {
-	.nluns          = ARRAY_SIZE(mass_storage_lun_config),
-	.buf_size       = 16384,
-	.vendor         = "SEMC",
-	.product        = "Mass storage",
-	.release        = 0xffff,
-	.lun_conf       = mass_storage_lun_config,
-};
-
-static struct platform_device mass_storage_device = {
-	.name           = "usb_mass_storage",
-	.id             = -1,
-	.dev            = {
-		.platform_data          = &usb_mass_storage_pdata,
-	},
-};
-#endif /* CONFIG_USB_FUNCTION */
-
 #ifdef CONFIG_USB_ANDROID
 /* dynamic composition */
-static struct usb_composition usb_func_composition[] = {
+static char *usb_func_msc[] = {
+	"usb_mass_storage",
+};
+static char *usb_func_msc_adb[] = {
+	"usb_mass_storage",
+	"adb",
+};
+static char *usb_func_rndis[] = {
+	"rndis",
+};
+static char *usb_func_adb_rndis[] = {
+	"rndis",
+	"adb",
+};
+
+static char *usb_func_msc_adb_eng[] = {
+	"usb_mass_storage",
+	"adb",
+	"modem",
+	"nmea",
+	"diag",
+};
+
+static char *usb_functions_all[] = {
+	"rndis",
+	"usb_mass_storage",
+	"adb",
+	"modem",
+	"nmea",
+	"diag",
+};
+static struct android_usb_product android_usb_products[] = {
 	{
-		/* MSC( + CDROM) */
-		.product_id	= 0x312E,
-		.functions	= 0xD,
-		/* MSC( + CDROM) + ADB */
-		.adb_product_id	= 0x212E,
-		.adb_functions	= 0x1D,
-		/* DIAG + ADB + MODEM + NMEA + MSC( + CDROM) */
-		.eng_product_id	= 0x2146,
-		.eng_functions	= 0xD7614,
+		.product_id = 0xE12E,
+		.functions = usb_func_msc,
+		.num_functions = ARRAY_SIZE(usb_func_msc),
 	},
 	{
-		/* MSC */
-		.product_id	= 0xE12E,
-		.functions	= 0x02,
-		/* MSC + ADB */
-		.adb_product_id	= 0x612E,
-		.adb_functions	= 0x12,
-		/* MSC + ADB + MODEM + NMEA + DIAG */
-		.eng_product_id	= 0x6146,
-		.eng_functions	= 0x47612,
+		.product_id = 0x612E,
+		.functions = usb_func_msc_adb,
+		.num_functions = ARRAY_SIZE(usb_func_msc_adb),
 	},
 	{
-		/* ADB+MSC+ECM */
-		.product_id	= 0x3146,
-		.functions	= 0x821,
-		.adb_product_id	= 0x3146,
-		.adb_functions	= 0x821,
+		.product_id = 0x712E,
+		.functions = usb_func_rndis,
+		.num_functions = ARRAY_SIZE(usb_func_rndis),
+	},
+	{
+		.product_id = 0x812E,
+		.functions = usb_func_adb_rndis,
+		.num_functions = ARRAY_SIZE(usb_func_adb_rndis),
+	},
+	{
+		.product_id = 0x6146,
+		.functions = usb_func_msc_adb_eng,
+		.num_functions = ARRAY_SIZE(usb_func_msc_adb_eng),
+	}
+};
+
+static struct usb_mass_storage_platform_data mass_storage_pdata = {
+        .nluns = 1,
+        .vendor = "SEMC",
+        .product = "Mass Storage",
+        .release = 0x0100,
+
+        .cdrom_nluns = 1,
+        .cdrom_vendor = "SEMC",
+        .cdrom_product = "CD-ROM",
+        .cdrom_release = 0x0100,
+};
+
+static struct platform_device usb_mass_storage_device = {
+        .name = "usb_mass_storage",
+        .id = -1,
+        .dev = {
+                .platform_data = &mass_storage_pdata,
+                },
+};
+
+static struct usb_ether_platform_data rndis_pdata = {
+	/* ethaddr is filled by board_serialno_setup */
+	.vendorID	= 0x0FCE,
+	.vendorDescr	= "SEMC",
+};
+
+static struct platform_device rndis_device = {
+	.name	= "rndis",
+	.id	= -1,
+	.dev	= {
+		.platform_data = &rndis_pdata,
 	},
 };
-static struct usb_mass_storage_lun_config msc_lun_config = {
-	.is_cdrom	= false,
-	.shift_size	= 9,
-	.can_stall	= true,
-	.vendor		= "SEMC",
-	.product	= "Mass Storage",
-	.release	= 0x0001,
-};
-static struct usb_mass_storage_lun_config cdrom_lun_config = {
-	.is_cdrom	= true,
-	.shift_size	= 11,
-	.can_stall	= false,
-	.vendor		= "SEMC",
-	.product	= "CD-ROM",
-	.release	= 0x0001,
-};
-static struct usb_mass_storage_lun_config msc_cdrom_lun_config[] = {
-	{
-		.is_cdrom	= false,
-		.shift_size	= 9,
-		.can_stall	= true,
-		.vendor		= "SEMC",
-		.product	= "Mass Storage",
-		.release	= 0x0001,
-	},
-	{
-		.is_cdrom	= true,
-		.shift_size	= 11,
-		.can_stall	= false,
-		.vendor		= "SEMC",
-		.product	= "CD-ROM",
-		.release	= 0x0001,
-	},
-};
+
 static struct android_usb_platform_data android_usb_pdata = {
 	.vendor_id		= 0x0FCE,
+	.product_id		= 0xE12E,
 	.version		= 0x0100,
-	.serial_number		= "1234567890ABCDEF",
-	.compositions		= usb_func_composition,
-	.num_compositions	= ARRAY_SIZE(usb_func_composition),
 	.product_name		= "SEMC HSUSB Device",
 	.manufacturer_name	= "SEMC",
-	.nluns			= 1,
-	.cdrom_lun_conf		= &cdrom_lun_config,
-	.msc_lun_conf		= &msc_lun_config,
-	.msc_cdrom_lun_conf	= msc_cdrom_lun_config,
+	.serial_number		= "1234567890ABCDEF",
+	.num_products		= ARRAY_SIZE(android_usb_products),
+	.products		= android_usb_products,
+	.num_functions		= ARRAY_SIZE(usb_functions_all),
+	.functions		= usb_functions_all,
 };
 static struct platform_device android_usb_device = {
 	.name	= "android_usb",
@@ -400,72 +394,13 @@ static struct platform_device smc91x_device = {
 	.resource       = smc91x_resources,
 };
 #endif /* CONFIG_SMC91X */
-
-#ifdef CONFIG_USB_FUNCTION
-static struct usb_function_map usb_functions_map[] = {
-	{"mass_storage", 0},
-	{"adb", 1},
-	{"modem", 2},
-	{"nmea", 3},
-	{"diag", 4},
-	{"ethernet", 5},
-#ifdef CONFIG_USB_FUNCTION_GG
-	{"gg", 6},
-#endif
-};
-
-/* dynamic composition */
-static struct usb_composition usb_func_composition[] = {
-#if defined(CONFIG_MACH_ES209RA)
-	{	/*  (ms) */
-		.product_id         = 0xE12E,
-		.functions	    = 0x01, /* 00001 */
-	},
-
-	{	/* (ms+adb+modem+nmea+diag) */
-		.product_id         = 0xD12E,
-		.functions	    = 0x1F, /* 11111 */
-	},
-#endif
-	{	/* (ms+nmea+modem+diag) */
-		.product_id         = 0x0146,
-		.functions	    = 0x1D, /* 11101 */
-	},
-
-	{	/* (ms+nmea+modem+adb+diag) */
-		.product_id         = 0x2146,
-		.functions	    = 0x1F, /* 11111 */
-	},
-
-	{	/* (eth+ms+adb) */
-		.product_id         = 0x3146,
-		.functions	    = 0x32, /* 110010 */
-	},
-
-	{	/* (eth+ms+nmea+modem+diag) */
-		.product_id         = 0xD146,
-		.functions	    = 0x3D, /* 111101 */
-	},
-
-	{	/* (eth+ms+nmea+modem+adb+diag) */
-		.product_id         = 0xE146,
-		.functions	    = 0x3F, /* 111111 */
-	},
-#ifdef CONFIG_USB_FUNCTION_GG
-	{
-		.product_id         = 0xADDE,
-		.functions	    = 0x40, /* 1000010 */
-	},
-#endif
-};
-#endif /* CONFIG_USB_FUNCTION */
  
 static struct platform_device hs_device = {
-	.name   = "msm-handset",
-	.id     = -1,
-	.dev    = {
-		.platform_data = "8k_handset",
-	},
+       .name   = "msm-handset",
+       .id     = -1,
+       .dev    = {
+               .platform_data = "8k_handset",
+       },
 };
 
 #ifdef CONFIG_USB_FS_HOST
@@ -665,21 +600,6 @@ static int msm_hsusb_native_phy_reset(void __iomem *addr)
 }
 
 static struct msm_hsusb_platform_data msm_hsusb_pdata = {
-#ifdef CONFIG_USB_FUNCTION
-	.version	= 0x0100,
-	.phy_info	= (USB_PHY_INTEGRATED | USB_PHY_MODEL_180NM),
-	.vendor_id          = 0x0FCE,
-	.product_name       = "Sony Ericsson X10",
-	.serial_number      = "1234567890ABCDEF",
-	.manufacturer_name  = "Sony Ericsson, Inc.",
-	.compositions	= usb_func_composition,
-	.num_compositions = ARRAY_SIZE(usb_func_composition),
-	.function_map   = usb_functions_map,
-	.num_functions	= ARRAY_SIZE(usb_functions_map),
-	.config_gpio    = NULL,
-
-	.phy_reset = msm_hsusb_native_phy_reset,
-#endif
 };
 
 #ifdef CONFIG_USB_FS_HOST
@@ -1612,6 +1532,19 @@ static struct akm8973_i2c_platform_data akm8973_platform_data = {
 };
 #endif /* CONFIG_SENSORS_AK8973 */
 
+static int bma150_gpio_setup(bool request)
+{
+	if (request)
+		return gpio_request(ES209RA_GPIO_ACCEL, "bma150_irq");
+	else
+		gpio_free(ES209RA_GPIO_ACCEL);
+	return 0;
+}
+
+struct bma150_platform_data bma150_ng_platform_data = {
+	.gpio_setup = &bma150_gpio_setup,
+};
+
 static struct i2c_board_info msm_i2c_board_info[] __initdata = {
 	{
 		I2C_BOARD_INFO("tps65023", 0x48),
@@ -1634,6 +1567,7 @@ static struct i2c_board_info msm_i2c_board_info[] __initdata = {
 	{
 		I2C_BOARD_INFO("bma150", 0x38), 
 		.irq		   =  INT_ES209RA_GPIO_ACCEL,
+		.platform_data = &bma150_ng_platform_data,
 	},
 	{
 		I2C_BOARD_INFO("semc_imx046_camera", 0x1F),
@@ -1993,9 +1927,8 @@ static struct platform_device *devices[] __initdata = {
 	&msm_device_nand,
 	&msm_device_i2c,
 	&qsd_device_spi,
-#ifdef CONFIG_USB_FUNCTION
-	&mass_storage_device,
-#endif
+	&rndis_device,
+	&usb_mass_storage_device,
 #ifdef CONFIG_USB_ANDROID
 	&android_usb_device,
 #endif
@@ -2593,12 +2526,14 @@ static void __init es209ra_map_io(void)
 static int __init board_serialno_setup(char *serialno)
 {
 #ifdef CONFIG_USB_ANDROID
+	int i;
+	char *src = serialno;
 	android_usb_pdata.serial_number = serialno;
 	printk(KERN_INFO "USB serial number: %s\n", android_usb_pdata.serial_number);
-#endif
-#ifdef CONFIG_USB_FUNCTION
-	msm_hsusb_pdata.serial_number = serialno;
-	printk(KERN_INFO "USB serial number: %s\n", msm_hsusb_pdata.serial_number);
+
+	rndis_pdata.ethaddr[0] = 0x02;
+	for (i = 0; *src; i++)
+		rndis_pdata.ethaddr[i % (ETH_ALEN -1)+1] ^= *src++;
 #endif
 	return 1;
 }

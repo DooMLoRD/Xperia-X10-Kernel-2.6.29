@@ -1432,7 +1432,7 @@ int mdp_ppp_blit(struct fb_info *info, struct mdp_blit_req *req)
 	/* MDP cmd block enable */
 	mdp_pipe_ctrl(MDP_CMD_BLOCK, MDP_BLOCK_POWER_ON, FALSE);
 
-#ifndef CONFIG_FB_MSM_MDP22
+#ifdef CONFIG_FB_MSM_MDP31
 	mdp_start_ppp(mfd, &iBuf, req, p_src_file, p_dst_file);
 #else
 	/* bg tile fetching HW workaround */

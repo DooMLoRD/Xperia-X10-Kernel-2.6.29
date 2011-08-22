@@ -934,8 +934,13 @@ static void max17040_notify_change(void)
 
 static void max17040_update_info(struct work_struct *work)
 {
+	static int initialized = 0;
 	mutex_lock(&max17040_info_lock);
 
+	if (!initialized) {
+		max17040_load_model();
+		initialized=1;
+	}
 	/* Update each battery info */
 	max17040_update_voltage();
 	max17040_update_temperature();
@@ -1069,10 +1074,6 @@ static int max17040_probe(struct i2c_client *client,
 				"\"%s\" (%d)\n",
 				max17040_power_supplies[i].name, res);
 	}
-
-
-	/* Load custom model */
-	max17040_load_model();
 
 	/* Create peculiar attributes */
 	res = max17040_create_attrs(

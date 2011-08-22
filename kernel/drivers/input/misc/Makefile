@@ -30,3 +30,5 @@ else
 endif
 obj-$(CONFIG_INPUT_KEYCHORD)	+= keychord.o
 obj-$(CONFIG_BMA150)			+= bma150.o
+obj-$(CONFIG_INPUT_BMA150_NG)           += bma150_ng.o
+

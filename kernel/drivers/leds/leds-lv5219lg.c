@@ -1260,6 +1260,9 @@ static void lv5219lg_device_init(void)
 
 	reg_PTCTL2 |= 0x6C;
 	lv5219lg_i2c_write(LV5219LG_REG_PTCTL2, reg_PTCTL2);
+
+	lv5219lg_mled_normal_intensity_ctrl(30);
+	lv5219lg_mled_normal_ctrl(LV5219LG_CONTROL_ON);
 }
 
 static int lv5219lg_probe(struct i2c_client *client,
