@@ -127,6 +127,12 @@ config CPU_FREQ_DEFAULT_GOV_SMARTASS
 	help
 	  Use the CPUFreq governor 'smartass' as default
 
+config CPU_FREQ_DEFAULT_GOV_SCARY
+	bool "scary"
+	select CPU_FREQ_GOV_SCARY
+	help
+		Use the CPUFreq governor 'scary' as default.
+
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	bool "interactive"
 	select CPU_FREQ_GOV_INTERACTIVE
@@ -236,6 +242,14 @@ config CPU_FREQ_GOV_SMARTASS
 	  'smartass' - a "smart" optimized governor for the hero!
 
 	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SCARY
+	tristate "'scary' cpufreq governor"
+	depends on CPU_FREQ
+	help
+		scary - a governor for cabbages
+
+		If in doubt, say N.
 
 config CPU_FREQ_MIN_TICKS
 	int "Ticks between governor polling interval."

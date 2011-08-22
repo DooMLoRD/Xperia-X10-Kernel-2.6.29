@@ -53,8 +53,8 @@ struct q6_hw_info {
 
 static struct q6_hw_info q6_audio_hw[Q6_HW_COUNT] = {
 	[Q6_HW_HANDSET] = {
-		.min_gain = -900,
-		.max_gain = 600,
+		.min_gain = -400,
+		.max_gain = 1000,
 	},
 	[Q6_HW_HEADSET] = {
 		.min_gain = -1900,
@@ -1182,12 +1182,20 @@ static void _audio_rx_clk_enable(void)
 static void _audio_tx_clk_enable(void)
 {
 	uint32_t device_group = q6_device_to_codec(audio_tx_device_id);
+	uint32_t icodec_tx_clk_rate;
 
 	switch (device_group) {
 	case Q6_ICODEC_TX:
 		icodec_tx_clk_refcount++;
 		if (icodec_tx_clk_refcount == 1) {
-			clk_set_rate(icodec_tx_clk, tx_clk_freq * 256);
+			if (tx_clk_freq > 16000)
+				icodec_tx_clk_rate = 48000;
+			else if (tx_clk_freq > 8000)
+				icodec_tx_clk_rate = 16000;
+			else
+				icodec_tx_clk_rate = 8000;
+
+			clk_set_rate(icodec_tx_clk, icodec_tx_clk_rate * 256);
 			clk_enable(icodec_tx_clk);
 		}
 		break;
