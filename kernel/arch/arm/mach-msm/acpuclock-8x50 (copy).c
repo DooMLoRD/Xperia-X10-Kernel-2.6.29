@@ -116,7 +116,7 @@ struct clkctl_acpu_speed {
 	unsigned long    lpj; /* loops_per_jiffy */
 };
 /* FS-series */
-
+/*
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 0, 0, 14000, 0, 0, 1000},
 	{ 0, 128000, ACPU_PLL_1, 1, 5, 0, 0, 14000, 2, 0, 1000},
@@ -149,9 +149,9 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 1228800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x20, 1375},
 	{ 0, 1267200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x21, 1425},
 };
-
+*/
 /* S-series */
-/*
+
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 0, 0, 14000, 0, 0, 1000},
 	{ 1, 128000, ACPU_PLL_1, 1, 5, 0, 0, 14000, 2, 0, 1000},
@@ -184,7 +184,7 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 1, 1228800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x20, 1375},
 	{ 0, 1267200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x21, 1425},
 };
-*/
+
 /* X-series */
 /*
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
@@ -758,13 +758,13 @@ static void __init acpu_freq_tbl_fixup(void)
 	case 0x30:
 	case 0x00:
 		/* FS version */
-
+/*
 		max_acpu_khz = 998400;		
-
+*/
 		/* S/X version */
-		/*
+		
 		max_acpu_khz = 1228800; //1113600; //1152000; //1190400; //998400;
-		*/
+		
 		break;
 	case 0x10:
 		max_acpu_khz = 1267200;
@@ -872,10 +872,7 @@ ssize_t acpuclk_get_vdd_levels_str(char *buf)
 		mutex_lock(&drv_state.lock);
 		for (i = 0; acpu_freq_tbl[i].acpuclk_khz; i++)
 		{
-			if(acpu_freq_tbl[i].use_for_scaling==1)
-			{
-				len += sprintf(buf + len, "%8u: %4d\n", acpu_freq_tbl[i].acpuclk_khz, acpu_freq_tbl[i].vdd);
-			}
+			len += sprintf(buf + len, "%8u: %4d\n", acpu_freq_tbl[i].acpuclk_khz, acpu_freq_tbl[i].vdd);
 		}
 		mutex_unlock(&drv_state.lock);
 	}
@@ -890,16 +887,14 @@ void acpuclk_set_vdd(unsigned int khz, int vdd)
 	mutex_lock(&drv_state.lock);
 	for (i = 0; acpu_freq_tbl[i].acpuclk_khz; i++)
 	{
-		if(acpu_freq_tbl[i].use_for_scaling==1)
-		{
-			if (khz == 0)
-				new_vdd = min(max((unsigned int)(acpu_freq_tbl[i].vdd + vdd), SEMC_ACPU_MIN_UV_MV), SEMC_ACPU_MAX_UV_MV);
-			else if (acpu_freq_tbl[i].acpuclk_khz == khz)
-				new_vdd = min(max((unsigned int)vdd, SEMC_ACPU_MIN_UV_MV), SEMC_ACPU_MAX_UV_MV);
-			else continue;
+		if (khz == 0)
+			new_vdd = min(max((unsigned int)(acpu_freq_tbl[i].vdd + vdd), SEMC_ACPU_MIN_UV_MV), SEMC_ACPU_MAX_UV_MV);
+		else if (acpu_freq_tbl[i].acpuclk_khz == khz)
+			new_vdd = min(max((unsigned int)vdd, SEMC_ACPU_MIN_UV_MV), SEMC_ACPU_MAX_UV_MV);
+		else continue;
 
-			acpu_freq_tbl[i].vdd = new_vdd;
-		}
+		acpu_freq_tbl[i].vdd = new_vdd;
+
 	}
 	mutex_unlock(&drv_state.lock);
 }
