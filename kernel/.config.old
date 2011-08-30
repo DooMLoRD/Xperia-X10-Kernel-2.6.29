@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.29
-# Tue Aug 23 23:27:23 2011
+# Tue Aug 23 23:22:58 2011
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -391,6 +391,8 @@ CONFIG_CPU_FREQ_SAMPLING_LATENCY_MULTIPLIER=1000
 CONFIG_CPU_FREQ_VDD_LEVELS=y
 # CONFIG_CPU_IDLE is not set
 CONFIG_CPU_FREQ_MSM=y
+# CONFIG_CPU_FREQ_DOOM_SERIES_FS is not set
+CONFIG_CPU_FREQ_DOOM_SERIES_NORMAL=y
 
 #
 # Floating point emulation

@@ -116,7 +116,7 @@ struct clkctl_acpu_speed {
 	unsigned long    lpj; /* loops_per_jiffy */
 };
 /* FS-series */
-
+/*
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 0, 0, 14000, 0, 0, 1000},
 	{ 0, 128000, ACPU_PLL_1, 1, 5, 0, 0, 14000, 2, 0, 1000},
@@ -149,9 +149,9 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 1228800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x20, 1375},
 	{ 0, 1267200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x21, 1425},
 };
-
+*/
 /* S-series */
-/*
+
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 0, 0, 14000, 0, 0, 1000},
 	{ 1, 128000, ACPU_PLL_1, 1, 5, 0, 0, 14000, 2, 0, 1000},
@@ -184,7 +184,7 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 1, 1228800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x20, 1375},
 	{ 0, 1267200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x21, 1425},
 };
-*/
+
 /* X-series */
 /*
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
@@ -758,13 +758,13 @@ static void __init acpu_freq_tbl_fixup(void)
 	case 0x30:
 	case 0x00:
 		/* FS version */
-
+/*
 		max_acpu_khz = 998400;		
-
+*/
 		/* S/X version */
-		/*
+
 		max_acpu_khz = 1228800; //1113600; //1152000; //1190400; //998400;
-		*/
+
 		break;
 	case 0x10:
 		max_acpu_khz = 1267200;
