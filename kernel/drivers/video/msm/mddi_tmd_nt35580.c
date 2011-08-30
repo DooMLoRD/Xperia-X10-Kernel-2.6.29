@@ -681,7 +681,7 @@ static int mddi_nt35580_lcd_lcd_off(struct platform_device *pdev)
 	return 0;
 }
 
-static int nt35580_lcd_get_nv_vsync(void)
+/* static int nt35580_lcd_get_nv_vsync(void)
 {
 	struct get_lcd_vsync_req{
 		struct rpc_request_nv_cmd	nv;
@@ -714,11 +714,11 @@ static int nt35580_lcd_get_nv_vsync(void)
 	}
 	return be32_to_cpu(rep.data.vsync_usec);
 }
-
+*/
 static int __init mddi_nt35580_lcd_lcd_probe(struct platform_device *pdev)
 {
 	struct msm_fb_panel_data *panel_data;
-	int nv_vsync = 0;
+//	int nv_vsync = 0;
 
 	if (!pdev) {
 		printk(KERN_ERR "%s: Display failed\n", __func__);
@@ -734,12 +734,12 @@ static int __init mddi_nt35580_lcd_lcd_probe(struct platform_device *pdev)
 	panel_data->on  = mddi_nt35580_lcd_lcd_on;
 	panel_data->off = mddi_nt35580_lcd_lcd_off;
 
-	nv_vsync = nt35580_lcd_get_nv_vsync();
+/*	nv_vsync = nt35580_lcd_get_nv_vsync();
 	nv_vsync >>= 16;
 	nv_vsync &= (0xffff);
 	if ((MIN_NV > nv_vsync) || (nv_vsync > MAX_NV))
-		nv_vsync = DEF_NV ;
-	panel_data->panel_info.lcd.refx100 = 100000000 / nv_vsync;
+		nv_vsync = DEF_NV ; */
+	panel_data->panel_info.lcd.refx100 = 5500; //100000000 / nv_vsync;
 	panel_data->panel_info.width = 51;
 	panel_data->panel_info.height = 89;
 

@@ -1013,7 +1013,7 @@ static void __init msm_mddi_tmd_fwvga_display_device_init(void)
 
 	panel_data->panel_info.mddi.vdopkt = MDDI_DEFAULT_PRIM_PIX_ATTR;
 
-	panel_data->panel_info.lcd.vsync_enable = TRUE;
+	panel_data->panel_info.lcd.vsync_enable = FALSE;
 	panel_data->panel_info.lcd.v_back_porch = 12;
 	panel_data->panel_info.lcd.v_front_porch = 2;
 	panel_data->panel_info.lcd.v_pulse_width = 0;
