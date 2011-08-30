@@ -86,8 +86,8 @@
 #define VREF_SEL     1	/* 0: 0.625V (50mV step), 1: 0.3125V (25mV step). */
 #define V_STEP       (25 * (2 - VREF_SEL)) /* Minimum voltage step size. */
 
-#define SEMC_ACPU_MIN_UV_MV 850U
-#define SEMC_ACPU_MAX_UV_MV 1425U
+#define SEMC_ACPU_MIN_UV_MV 750U
+#define SEMC_ACPU_MAX_UV_MV 1500U
 
 #define dprintk(msg...) \
 	cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, "cpufreq-msm", msg)
@@ -116,7 +116,7 @@ struct clkctl_acpu_speed {
 	unsigned long    lpj; /* loops_per_jiffy */
 };
 /* FS-series */
-/*
+
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 0, 0, 14000, 0, 0, 1000},
 	{ 0, 128000, ACPU_PLL_1, 1, 5, 0, 0, 14000, 2, 0, 1000},
@@ -130,12 +130,12 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 499200, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0xD, 1000},
 	{ 0, 537600, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0xE, 1000},
 	{ 1, 576000, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0xF, 1025},
-	{ 0, 614400, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x10, 1050},
+	{ 1, 614400, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x10, 1050},
 	{ 1, 652800, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x11, 1075},
-	{ 0, 691200, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x12, 1100},
-	{ 0, 729600, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x13, 1100},
+	{ 1, 691200, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x12, 1100},
+	{ 1, 729600, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x13, 1100},
 	{ 1, 768000, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x14, 1125},
-	{ 0, 806400, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x15, 1150},
+	{ 1, 806400, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x15, 1150},
 	{ 1, 844800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x16, 1200},
 	{ 0, 883200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x17, 1150},
 	{ 1, 921600, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x18, 1250},
@@ -149,9 +149,9 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 1228800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x20, 1375},
 	{ 0, 1267200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x21, 1425},
 };
-*/
-/* S-series */
 
+/* S-series */
+/*
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 19200, ACPU_PLL_TCXO, 0, 0, 0, 0, 14000, 0, 0, 1000},
 	{ 1, 128000, ACPU_PLL_1, 1, 5, 0, 0, 14000, 2, 0, 1000},
@@ -165,12 +165,12 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 0, 499200, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0xD, 1000},
 	{ 0, 537600, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0xE, 1000},
 	{ 1, 576000, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0xF, 1025},
-	{ 0, 614400, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x10, 1050},
+	{ 1, 614400, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x10, 1050},
 	{ 1, 652800, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x11, 1075},
-	{ 0, 691200, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x12, 1100},
-	{ 0, 729600, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x13, 1100},
+	{ 1, 691200, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x12, 1100},
+	{ 1, 729600, ACPU_PLL_3, 0, 0, 0, 0, 117000, 1, 0x13, 1100},
 	{ 1, 768000, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x14, 1125},
-	{ 0, 806400, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x15, 1150},
+	{ 1, 806400, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x15, 1150},
 	{ 1, 844800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x16, 1200},
 	{ 0, 883200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x17, 1150},
 	{ 1, 921600, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x18, 1250},
@@ -184,7 +184,7 @@ struct clkctl_acpu_speed acpu_freq_tbl_998[] = {
 	{ 1, 1228800, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x20, 1375},
 	{ 0, 1267200, ACPU_PLL_3, 0, 0, 0, 0, 128000, 1, 0x21, 1425},
 };
-
+*/
 /* X-series */
 /*
 struct clkctl_acpu_speed acpu_freq_tbl_998[] = {

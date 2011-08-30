@@ -140,6 +140,7 @@ config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	 Use the 'interactive' governor as default. This gets full cpu frequency
 	 scaling for workloads that are latency sensitive, typically interactive
 	 workloads..
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE

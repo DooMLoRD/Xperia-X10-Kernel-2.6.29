@@ -1,7 +1,7 @@
 /*
  * Automatically generated C config: don't edit
  * Linux kernel version: 2.6.29
- * Fri Aug 26 17:32:01 2011
+ * Sun Aug 28 01:03:16 2011
  */
 #define AUTOCONF_INCLUDED
 #define CONFIG_VIDEO_V4L1_COMPAT 1
@@ -415,7 +415,7 @@
 #define CONFIG_VIRT_TO_BUS 1
 #define CONFIG_MSM_SMD_TTY 1
 #define CONFIG_MD 1
-#define CONFIG_LOCALVERSION "-modFXP-DooMKernel-v03c"
+#define CONFIG_LOCALVERSION "-modFXP-DooMKernel-v04-FS"
 #define CONFIG_SMB_NLS_DEFAULT 1
 #define CONFIG_USB_MSM_OTG_72K 1
 #define CONFIG_DIAG_CHAR 1
