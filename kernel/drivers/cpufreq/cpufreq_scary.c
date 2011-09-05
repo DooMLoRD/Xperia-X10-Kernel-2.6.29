@@ -30,15 +30,22 @@
 
 #define DEF_FREQUENCY_UP_THRESHOLD		(80)
 #define DEF_FREQUENCY_DOWN_THRESHOLD		(45)
-#define DEFAULT_SLEEP_MAX_FREQ 384000
-#define DEFAULT_SLEEP_MIN_FREQ 245760
-#define DEFAULT_SLEEP_PREV_FREQ 245760 //This is so that if there are any issues resulting in sleep_prev_freq getting set, there will be a backup freq
-#define DEFAULT_PREV_MAX 998400
+/*
+ * #define DEFAULT_SLEEP_MAX_FREQ 384000
+ * #define DEFAULT_SLEEP_MIN_FREQ 245760
+ * #define DEFAULT_SLEEP_PREV_FREQ 245760 //This is so that if there are any issues resulting in sleep_prev_freq getting set, there will be a backup freq
+ * #define DEFAULT_PREV_MAX 998400
+ * static unsigned int sleep_max_freq=DEFAULT_SLEEP_MAX_FREQ;
+ * static unsigned int sleep_min_freq=DEFAULT_SLEEP_MIN_FREQ;
+ * static unsigned int sleep_prev_freq=DEFAULT_SLEEP_PREV_FREQ;
+ * static unsigned int sleep_prev_max=DEFAULT_PREV_MAX;
+*/
+static unsigned int sleep_max_freq=384000;
+static unsigned int sleep_min_freq=245760;
+static unsigned int sleep_prev_freq=245760;
+static unsigned int sleep_prev_max=998400;
 static unsigned int suspended;
-static unsigned int sleep_max_freq=DEFAULT_SLEEP_MAX_FREQ;
-static unsigned int sleep_min_freq=DEFAULT_SLEEP_MIN_FREQ;
-static unsigned int sleep_prev_freq=DEFAULT_SLEEP_PREV_FREQ;
-static unsigned int sleep_prev_max=DEFAULT_PREV_MAX;
+
 
 /*
  * The polling frequency of this governor depends on the capability of
@@ -407,8 +414,11 @@ static void smartass_suspend(int cpu, int suspend)
     }
     else //Resetting the min speed
     {
-        if (policy->min < sleep_prev_freq)
-            policy->min=sleep_prev_freq;
+	/* // fixing issue which may cause the min freq to be set to 
+	 * // sleep_prev_freq after resuming from sleep/suspend
+         * if (policy->min < sleep_prev_freq)
+         *  policy->min=sleep_prev_freq;
+	 */
         if (policy->max < sleep_prev_max)
             policy->max=sleep_prev_max;
     }

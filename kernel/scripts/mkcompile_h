@@ -35,7 +35,7 @@ else
 	VERSION=$KBUILD_BUILD_VERSION
 fi
 
-SEMC_BUILD_TIMESTAMP=`cd $srctree && scripts/timestamp_gen.sh`
+#SEMC_BUILD_TIMESTAMP=`cd $srctree && scripts/timestamp_gen.sh`
 
 if [ -z "$SEMC_BUILD_TIMESTAMP" ]; then
 	TIMESTAMP=`date`
