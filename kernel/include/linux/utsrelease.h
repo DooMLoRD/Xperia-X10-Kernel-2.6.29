@@ -1,1 +1,1 @@
-#define UTS_RELEASE "2.6.29-modFXP-DooMKernel-v04-FS"
+#define UTS_RELEASE "2.6.29-modFXP-DooMKernel-v05-FS"

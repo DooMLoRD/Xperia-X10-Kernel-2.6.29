@@ -3410,7 +3410,6 @@
 0x00000000	seq_putc	vmlinux	EXPORT_SYMBOL
 0x00000000	seq_puts	vmlinux	EXPORT_SYMBOL
 0x00000000	pm_qos_remove_requirement	vmlinux	EXPORT_SYMBOL_GPL
-0x00000000	msm_rpc_get_compatible_server	vmlinux	EXPORT_SYMBOL
 0x00000000	uart_update_timeout	vmlinux	EXPORT_SYMBOL
 0x00000000	part_round_stats	vmlinux	EXPORT_SYMBOL_GPL
 0x00000000	do_add_mount	vmlinux	EXPORT_SYMBOL_GPL
