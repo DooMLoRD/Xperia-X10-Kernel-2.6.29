@@ -346,8 +346,8 @@ KBUILD_CPPFLAGS := -D__KERNEL__
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
-		   -Wno-unused-but-set-variable -Wno-uninitialized \
-		   -Werror-implicit-function-declaration
+		   -Wno-unused-but-set-variable -Wunused-function -Wno-uninitialized
+#		   -Werror-implicit-function-declaration
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 
 # Read KERNELRELEASE from include/config/kernel.release (if it exists)
