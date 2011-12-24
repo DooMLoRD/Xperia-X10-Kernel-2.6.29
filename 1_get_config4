@@ -1,0 +1,5 @@
+#!/bin/bash
+cd kernel/
+echo "[*]-------->>>> Grabbing latest config..."
+ARCH=arm CROSS_COMPILE=/home/doomlord/android-toolchain-eabi/bin/arm-eabi- make doom_x10_defconfig
+cd ..

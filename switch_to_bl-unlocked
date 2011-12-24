@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "[*]-------->>>> switching to unlocked bootloader kernel"
+rm kernel/arch/arm/mach-msm/Makefile
+cp kernel/arch/arm/mach-msm/Makefile.bl-unlocked kernel/arch/arm/mach-msm/Makefile
+rm kernel/arch/arm/mach-msm/smd_rpcrouter.c
+cp kernel/arch/arm/mach-msm/smd_rpcrouter.c.bl-unlocked kernel/arch/arm/mach-msm/smd_rpcrouter.c
+echo "UNLOCKED" > kernel/CURRENT_BL

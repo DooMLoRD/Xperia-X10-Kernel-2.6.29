@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "[*]-------->>>> resetting version number"
+echo 0 > kernel/.version
+

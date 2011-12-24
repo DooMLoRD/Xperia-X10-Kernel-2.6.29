@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "[*]-------->>>> Cleaning Kernel (make distclean)..."
+cd kernel
+ARCH=arm CROSS_COMPILE=/home/doomlord/android-toolchain-eabi/bin/arm-eabi- make distclean
+cd ..
+

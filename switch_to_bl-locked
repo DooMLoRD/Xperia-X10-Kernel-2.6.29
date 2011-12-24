@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "[*]-------->>>> switching to locked bootloader kernel"
+rm kernel/arch/arm/mach-msm/Makefile
+cp kernel/arch/arm/mach-msm/Makefile.bl-locked kernel/arch/arm/mach-msm/Makefile
+rm kernel/arch/arm/mach-msm/smd_rpcrouter.c
+cp kernel/arch/arm/mach-msm/smd_rpcrouter.c.bl-locked kernel/arch/arm/mach-msm/smd_rpcrouter.c
+echo "LOCKED" > kernel/CURRENT_BL

@@ -1,0 +1,26 @@
+#!/bin/bash
+START=$(date +%s)
+echo "[*]-------->>>> Pulling Compiled Kernel..."
+cp kernel/arch/arm/boot/zImage compiled/.
+echo "[*]-------->>>> Wifi module..."
+cd platform/vendor/atheros/wlan/host
+echo "[*]-------->>>> cleaning..."
+ATH_LINUXPATH=/home/doomlord/android/freexperia-semc-kernel-qsd8k-bbb3b79/kernel ATH_CROSS_COMPILE=/home/doomlord/android-toolchain-eabi/bin/arm-eabi- make clean
+echo "[*]-------->>>> Compiling Wifi module..."
+ATH_LINUXPATH=/home/doomlord/android/freexperia-semc-kernel-qsd8k-bbb3b79/kernel ATH_CROSS_COMPILE=/home/doomlord/android-toolchain-eabi/bin/arm-eabi- make
+echo "[*]-------->>>> Pulling Wifi module..."
+cd ../../../../..
+cp platform/vendor/atheros/wlan/host/os/linux/ar6000.ko compiled/.
+cp platform/vendor/atheros/wlan/host/os/linux/ar6000.ko compiled/wifi.ko
+echo "[*]-------->>>> Stripping modules..."
+cd /home/doomlord/android/freexperia-semc-kernel-qsd8k-bbb3b79/compiled/
+/home/doomlord/android-toolchain-eabi/bin/arm-eabi-strip --strip-unneeded ar6000.ko
+/home/doomlord/android-toolchain-eabi/bin/arm-eabi-strip --strip-unneeded wifi.ko
+END=$(date +%s)
+ELAPSED=$((END - START))
+E_MIN=$((ELAPSED / 60))
+E_SEC=$((ELAPSED - E_MIN * 60))
+echo -n "[*]-------->>>> "
+printf "Elapsed: "
+[ $E_MIN != 0 ] && printf "%d min(s) " $E_MIN
+printf "%d sec(s)\n" $E_SEC
