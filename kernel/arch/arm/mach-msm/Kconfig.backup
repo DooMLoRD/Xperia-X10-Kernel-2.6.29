@@ -268,6 +268,13 @@ config DOOM_FS_SERIES
 	help
 	   limit CPU frequencies to stock (DooMKernel X10).
 
+config DOOM_1113_SERIES
+	depends on ARCH_QSD8X50
+  	default n
+	bool "DOOM_1113_SERIES"
+	help
+	   limit MAX CPU frequency 1113Mhz (DooMKernel X10).
+
 endmenu
 
 config MSM_STACKED_MEMORY
