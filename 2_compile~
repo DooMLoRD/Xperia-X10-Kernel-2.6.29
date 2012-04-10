@@ -2,7 +2,7 @@
 START=$(date +%s)
 cd kernel/
 echo "[*]-------->>>> Compiling Kernel..."
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make -j8
+ARCH=arm CROSS_COMPILE=/home/doomlord/android-toolchain-eabi/bin/arm-eabi- make -j8
 END=$(date +%s)
 ELAPSED=$((END - START))
 E_MIN=$((ELAPSED / 60))

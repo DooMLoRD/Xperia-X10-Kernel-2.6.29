@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "[*]-------->>>> Cleaning Kernel (make distclean)..."
 cd kernel
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- make distclean
+ARCH=arm CROSS_COMPILE=arm-linux-eabi- make distclean
 cd ..
 
