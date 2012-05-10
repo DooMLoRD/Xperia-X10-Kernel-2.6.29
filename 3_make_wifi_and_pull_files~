@@ -13,7 +13,7 @@ cd ../../../..
 cp vendor/atheros/wlan/host/os/linux/ar6000.ko compiled/.
 cp vendor/atheros/wlan/host/os/linux/ar6000.ko compiled/wifi.ko
 echo "[*]-------->>>> Stripping modules..."
-cd compiled
+cd /home/doomlord/android/freexperia-semc-kernel-qsd8k-bbb3b79/compiled/
 arm-linux-gnueabi-strip --strip-unneeded ar6000.ko
 arm-linux-gnueabi-strip --strip-unneeded wifi.ko
 END=$(date +%s)

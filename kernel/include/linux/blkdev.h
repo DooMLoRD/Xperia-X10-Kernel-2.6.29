@@ -841,6 +841,11 @@ extern void blk_update_request(struct request *rq, int error,
  * blk_rq_bytes() returns bytes left to complete in the entire request.
  * blk_rq_cur_bytes() returns bytes left to complete in the current segment.
  */
+static inline sector_t blk_rq_pos(const struct request *rq)
+{
+	return rq->hard_sector;
+}
+
 extern unsigned int blk_rq_bytes(struct request *rq);
 extern unsigned int blk_rq_cur_bytes(struct request *rq);
 
